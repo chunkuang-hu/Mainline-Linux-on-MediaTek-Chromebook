@@ -43,23 +43,23 @@ cd /tmp
 mkdir root
 mount /dev/sda2 root
 cd root
-11-1. Ubuntu base
+11.1. Ubuntu base
 wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
 tar zxfm  *.tar.gz
-11-2. chroot with network
+11.2. chroot with network
 mount --bind /dev dev
 mount --bind /proc proc
 mount --bind /sys sys
 cp /etc/resolv.conf etc
 chroot .
-11-3. config password for 'root'
+11.3. config password for 'root'
 passwd root
-11-4. install systemd, udev
+11.4. install systemd, udev
 apt-get update
 apt-get install -y systemd
 apt-get install -y udev
 ln -s /lib/systemd/systemd /sbin/init
-11-4. Netowrk
+11.5. Netowrk
 apt-get install -y iputils-ping
 apt-get install -y network-manager
 apt-get install -y netplan.io
@@ -70,7 +70,7 @@ network:
   ethernets:
     enx00e04cd25840:
       dhcp4: true
-11-5. Exit chroot, umount root, flush data into USB
+11.6. Exit chroot, umount root, flush data into USB
 exit
 cd ..
 umount root
