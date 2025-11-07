@@ -70,9 +70,14 @@ network:
   ethernets:
     enx00e04cd25840:
       dhcp4: true
-11.6. Exit chroot, umount root, flush data into USB
+11.6. Exit chroot, umount rootfs
 exit
 cd ..
 umount root
+12. Flush data into USB.
 sync
+
+
+Reference:
+[1] https://archlinuxarm.org/platforms/armv8/mediatek/acer-chromebook-r13
 
