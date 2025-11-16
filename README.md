@@ -33,7 +33,11 @@ mkfs.ext4 /dev/sda2
 9. Download mainline Linux, config for MediaTek Chromebook, and compile.
 10. Make boot image and write to boot partition
 
-sh make_its.sh
+wget https://github.com/chunkuang-hu/Mainline-Linux-on-MediaTek-Chromebook/tree/main/its_tool
+
+cd its_tool
+
+sh make_its.sh [linux out folder]
 
 mkimage -D "-I dts -O dtb -p 2048" -f kernel.its vmlinux.uimg
 
@@ -45,7 +49,7 @@ vbutil_kernel --pack vmlinux.kpart --version 1 --vmlinuz vmlinux.uimg --arch aar
 
 dd if=./vmlinux.kpart of=/dev/sda1
 
-12. Create rootfs: 
+11. Create rootfs: 
 
 cd /tmp 
 
