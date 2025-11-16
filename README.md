@@ -38,42 +38,33 @@ dd if=/dev/zero of=bootloader.bin bs=512 count=1
 echo "console=tty0 earlycon=uart8250,mmio32,0x11002000 init=/sbin/init root=/dev/sda2 rootwait  clk_ignore_unused debug loglevel=8 rw noinitrd" > cmdline
 vbutil_kernel --pack vmlinux.kpart --version 1 --vmlinuz vmlinux.uimg --arch aarch64 --keyblock ../kernel.keyblock --signprivate ../kernel_data_key.vbprivk --config cmdline --bootloader bootloader.bin
 dd if=./vmlinux.kpart of=/dev/sda1
-11. Create rootfs:
-cd /tmp
-mkdir root
-mount /dev/sda2 root
-cd root
+11. Create rootfs: 
+cd /tmp 
+mkdir root 
+mount /dev/sda2 root 
+cd root 
+11.1. Ubuntu base 
+wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz 
+tar zxfm  *.tar.gz 
 
-11.1. Ubuntu base
-
-wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
-tar zxfm  *.tar.gz
-
-11.2. chroot with network
-
-mount --bind /dev dev
-mount --bind /proc proc
-mount --bind /sys sys
-cp /etc/resolv.conf etc
-chroot .
-
-11.3. config password for 'root'
-
-passwd root
-
-11.4. install systemd, udev
-
-apt-get update
-apt-get install -y systemd
-apt-get install -y udev
-ln -s /lib/systemd/systemd /sbin/init
-
-11.5. Netowrk
-
-apt-get install -y iputils-ping
-apt-get install -y network-manager
+11.2. chroot with network 
+mount --bind /dev dev 
+mount --bind /proc proc 
+mount --bind /sys sys 
+cp /etc/resolv.conf etc 
+chroot . 
+11.3. config password for 'root' 
+passwd root 
+11.4. install systemd, udev 
+apt-get update 
+apt-get install -y systemd 
+apt-get install -y udev 
+ln -s /lib/systemd/systemd /sbin/init 
+11.5. Netowrk 
+apt-get install -y iputils-ping 
+apt-get install -y network-manager 
 apt-get install -y netplan.io
-vi /etc/netplan/99_config.yaml
+vi /etc/netplan/99_config.yaml 
 network:
   version: 2
   renderer: networkd
