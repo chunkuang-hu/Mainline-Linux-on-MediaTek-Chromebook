@@ -32,56 +32,97 @@ partx -a /dev/sda
 mkfs.ext4 /dev/sda2
 9. Download mainline Linux, config for MediaTek Chromebook, and compile.
 10. Make boot image and write to boot partition
+
 sh make_its.sh
+
 mkimage -D "-I dts -O dtb -p 2048" -f kernel.its vmlinux.uimg
+
 dd if=/dev/zero of=bootloader.bin bs=512 count=1
+
 echo "console=tty0 earlycon=uart8250,mmio32,0x11002000 init=/sbin/init root=/dev/sda2 rootwait  clk_ignore_unused debug loglevel=8 rw noinitrd" > cmdline
+
 vbutil_kernel --pack vmlinux.kpart --version 1 --vmlinuz vmlinux.uimg --arch aarch64 --keyblock ../kernel.keyblock --signprivate ../kernel_data_key.vbprivk --config cmdline --bootloader bootloader.bin
+
 dd if=./vmlinux.kpart of=/dev/sda1
-11. Create rootfs: 
+
+12. Create rootfs: 
+
 cd /tmp 
+
 mkdir root 
+
 mount /dev/sda2 root 
+
 cd root 
+
 11.1. Ubuntu base 
+
 wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz 
+
 tar zxfm  *.tar.gz 
 
 11.2. chroot with network 
+
 mount --bind /dev dev 
+
 mount --bind /proc proc 
+
 mount --bind /sys sys 
+
 cp /etc/resolv.conf etc 
+
 chroot . 
+
 11.3. config password for 'root' 
+
 passwd root 
+
 11.4. install systemd, udev 
+
 apt-get update 
+
 apt-get install -y systemd 
+
 apt-get install -y udev 
+
 ln -s /lib/systemd/systemd /sbin/init 
+
 11.5. Netowrk 
+
 apt-get install -y iputils-ping 
+
 apt-get install -y network-manager 
+
 apt-get install -y netplan.io
+
 vi /etc/netplan/99_config.yaml 
+
 network:
+
   version: 2
+
   renderer: networkd
+
   ethernets:
+
     enx00e04cd25840:
+
       dhcp4: true
       
 11.6. Exit chroot, umount rootfs
 
 exit
+
 cd ..
+
 umount root
 
 12. Flush data into USB.
+
 sync
 
 
 Reference:
+
 [1] https://archlinuxarm.org/platforms/armv8/mediatek/acer-chromebook-r13
 
