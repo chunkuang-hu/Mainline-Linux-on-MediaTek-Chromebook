@@ -1,4 +1,4 @@
-# Mainline-Linux-on-MediaTek-Chromebook
+# Mainline-Linux-on-MediaTek-Chromebook0
 
 # Create a root USB for dual booting
 Prepare a host Linux computer. (Maybe install unbuntu in UTM in MacBook or a Linux shell in Chromebook)
